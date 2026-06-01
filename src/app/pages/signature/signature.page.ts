@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { AfterViewInit, Component, ElementRef, inject, OnInit, signal, ViewChild } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
@@ -12,6 +12,7 @@ import {
   IonHeader,
   IonInput,
   IonText,
+  IonTextarea,
   IonTitle,
   IonToolbar,
 } from '@ionic/angular/standalone';
@@ -34,24 +35,22 @@ import { TaskService } from '../../services/task.service';
     IonHeader,
     IonInput,
     IonText,
+    IonTextarea,
     IonTitle,
     IonToolbar,
   ],
 })
-export class SignaturePage implements OnInit, AfterViewInit {
-  @ViewChild('signatureCanvas') private readonly signatureCanvas?: ElementRef<HTMLCanvasElement>;
-
+export class SignaturePage implements OnInit {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly taskService = inject(TaskService);
-  private drawing = false;
-  private hasSignature = false;
 
   readonly taskId = signal<string | null>(null);
   readonly error = signal<string | null>(null);
   readonly loading = this.taskService.loading;
   readonly task = signal(this.taskService.getTask(''));
   customerName = '';
+  confirmationText = 'I confirm the service has been completed.';
 
   ngOnInit(): void {
     const taskId = this.route.snapshot.paramMap.get('id');
@@ -63,57 +62,16 @@ export class SignaturePage implements OnInit, AfterViewInit {
     }
   }
 
-  ngAfterViewInit(): void {
-    this.resizeCanvas();
-  }
-
-  startDrawing(event: PointerEvent): void {
-    const context = this.getContext();
-
-    if (!context) {
-      return;
-    }
-
-    this.drawing = true;
-    context.beginPath();
-    this.draw(event);
-  }
-
-  draw(event: PointerEvent): void {
-    const canvas = this.signatureCanvas?.nativeElement;
-    const context = this.getContext();
-
-    if (!canvas || !context || !this.drawing) {
-      return;
-    }
-
-    const rect = canvas.getBoundingClientRect();
-    context.lineTo(event.clientX - rect.left, event.clientY - rect.top);
-    context.stroke();
-    this.hasSignature = true;
-  }
-
-  stopDrawing(): void {
-    this.drawing = false;
-  }
-
-  clearSignature(): void {
-    const canvas = this.signatureCanvas?.nativeElement;
-    const context = this.getContext();
-
-    if (!canvas || !context) {
-      return;
-    }
-
-    context.clearRect(0, 0, canvas.width, canvas.height);
-    this.hasSignature = false;
+  clearApproval(): void {
+    this.customerName = '';
+    this.confirmationText = '';
+    this.error.set(null);
   }
 
   async submit(): Promise<void> {
     const task = this.task();
-    const canvas = this.signatureCanvas?.nativeElement;
 
-    if (!task || !canvas) {
+    if (!task) {
       return;
     }
 
@@ -122,35 +80,13 @@ export class SignaturePage implements OnInit, AfterViewInit {
       return;
     }
 
-    if (!this.hasSignature) {
-      this.error.set('Signature is required');
+    if (!this.confirmationText.trim()) {
+      this.error.set('Approval confirmation is required');
       return;
     }
 
     this.error.set(null);
-    await this.taskService.submitSignature(task.id, this.customerName.trim(), canvas.toDataURL('image/png'));
+    await this.taskService.submitSignature(task.id, this.customerName.trim(), this.confirmationText.trim());
     await this.router.navigate(['/tasks/detail', task.id]);
-  }
-
-  private resizeCanvas(): void {
-    const canvas = this.signatureCanvas?.nativeElement;
-
-    if (!canvas) {
-      return;
-    }
-
-    canvas.width = canvas.offsetWidth;
-    canvas.height = 220;
-    const context = this.getContext();
-
-    if (context) {
-      context.lineWidth = 3;
-      context.lineCap = 'round';
-      context.strokeStyle = '#17212b';
-    }
-  }
-
-  private getContext(): CanvasRenderingContext2D | null {
-    return this.signatureCanvas?.nativeElement.getContext('2d') ?? null;
   }
 }

@@ -193,7 +193,7 @@ const MOCK_TASKS: TaskDetail[] = [
     signature: {
       id: 'signature_1006_1',
       customerName: 'Noah Wilson',
-      imageDataUrl: '',
+      confirmationText: 'Approved',
       submittedAt: '2026-05-31T15:02:00+12:00',
       actorName: 'Alex Chen',
     },
@@ -368,11 +368,11 @@ export class TaskService {
     }));
   }
 
-  async submitSignature(taskId: string, customerName: string, imageDataUrl: string): Promise<TaskDetail> {
+  async submitSignature(taskId: string, customerName: string, confirmationText: string): Promise<TaskDetail> {
     const signature: SignatureRecord = {
       id: `signature_${taskId}_${Date.now()}`,
       customerName,
-      imageDataUrl,
+      confirmationText,
       submittedAt: new Date().toISOString(),
       actorName: 'Alex Chen',
     };

@@ -69,7 +69,7 @@ export interface NoteRecord {
 export interface SignatureRecord {
   id: string;
   customerName: string;
-  imageDataUrl: string;
+  confirmationText: string;
   submittedAt: string;
   actorName: string;
 }

@@ -34,12 +34,6 @@ export const routes: Routes = [
       import('./pages/check-in/check-in.page').then((m) => m.CheckInPage),
   },
   {
-    path: 'tasks/:id/media',
-    canActivate: [authGuard],
-    loadComponent: () =>
-      import('./pages/task-media/task-media.page').then((m) => m.TaskMediaPage),
-  },
-  {
     path: 'tasks/:id/signature',
     canActivate: [authGuard],
     loadComponent: () =>

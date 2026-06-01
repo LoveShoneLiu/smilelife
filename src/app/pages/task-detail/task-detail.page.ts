@@ -19,7 +19,6 @@ import { addIcons } from 'ionicons';
 import {
   alertCircleOutline,
   callOutline,
-  cameraOutline,
   checkmarkCircleOutline,
   clipboardOutline,
   locationOutline,
@@ -96,7 +95,6 @@ export class TaskDetailPage implements OnInit {
     addIcons({
       alertCircleOutline,
       callOutline,
-      cameraOutline,
       checkmarkCircleOutline,
       clipboardOutline,
       locationOutline,
@@ -170,14 +168,6 @@ export class TaskDetailPage implements OnInit {
     }
 
     await this.mapService.openNavigation({ address: task.address });
-  }
-
-  async openPhotos(): Promise<void> {
-    const task = this.task();
-
-    if (task) {
-      await this.router.navigate(['/tasks', task.id, 'media']);
-    }
   }
 
   async openSignature(): Promise<void> {

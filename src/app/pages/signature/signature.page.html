@@ -31,23 +31,22 @@
 
     <ion-card>
       <ion-card-content>
-        <h2>Customer Signature</h2>
+        <h2>Customer Approval</h2>
         <ion-input
           [(ngModel)]="customerName"
           label="Customer name"
           labelPlacement="stacked"
           placeholder="Enter customer name"
         ></ion-input>
-        <canvas
-          #signatureCanvas
-          class="signature-pad"
-          (pointerdown)="startDrawing($event)"
-          (pointermove)="draw($event)"
-          (pointerup)="stopDrawing()"
-          (pointerleave)="stopDrawing()"
-        ></canvas>
+        <ion-textarea
+          [(ngModel)]="confirmationText"
+          label="Approval text"
+          labelPlacement="stacked"
+          autoGrow="true"
+          placeholder="Type the customer approval confirmation"
+        ></ion-textarea>
         <div class="actions">
-          <ion-button fill="outline" color="medium" (click)="clearSignature()">Clear</ion-button>
+          <ion-button fill="outline" color="medium" (click)="clearApproval()">Clear</ion-button>
           <ion-button [disabled]="loading()" (click)="submit()">
             {{ loading() ? 'Submitting...' : 'Submit Approval' }}
           </ion-button>

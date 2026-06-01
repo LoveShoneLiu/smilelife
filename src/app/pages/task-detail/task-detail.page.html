@@ -36,10 +36,6 @@
           <ion-icon name="navigate-outline" slot="start" aria-hidden="true"></ion-icon>
           Navigate
         </ion-button>
-        <ion-button fill="outline" color="medium" (click)="openPhotos()">
-          <ion-icon name="camera-outline" slot="start" aria-hidden="true"></ion-icon>
-          Photos & Notes
-        </ion-button>
       </div>
       @if (task.status !== 'completed' && task.status !== 'exception') {
         <ion-button expand="block" fill="clear" color="danger" [disabled]="loading()" (click)="reportIssue()">
