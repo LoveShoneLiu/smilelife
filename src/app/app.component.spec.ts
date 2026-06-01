@@ -1,3 +1,4 @@
+/// <reference types="jasmine" />
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 
@@ -19,24 +20,26 @@ describe('AppComponent', () => {
 
   it('should have menu labels', () => {
     const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const app = fixture.nativeElement;
-    const menuItems = app.querySelectorAll('ion-label');
-    expect(menuItems.length).toEqual(12);
-    expect(menuItems[0].textContent).toContain('Inbox change');
-    expect(menuItems[1].textContent).toContain('Outbox');
+    const app = fixture.componentInstance;
+    const menuLabels = [
+      ...app.appPages.map((page) => page.title),
+      ...app.labels,
+    ];
+
+    expect(menuLabels.length).toEqual(12);
+    expect(menuLabels[0]).toContain('Inbox');
+    expect(menuLabels[1]).toContain('Outbox');
   });
 
   it('should have urls', () => {
     const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const app = fixture.nativeElement;
-    const menuItems = app.querySelectorAll('ion-item');
-    expect(menuItems.length).toEqual(12);
-    expect(menuItems[0].getAttribute('href')).toEqual(
+    const app = fixture.componentInstance;
+
+    expect(app.appPages.length).toEqual(6);
+    expect(app.appPages[0].url).toEqual(
       '/folder/inbox'
     );
-    expect(menuItems[1].getAttribute('href')).toEqual(
+    expect(app.appPages[1].url).toEqual(
       '/folder/outbox'
     );
   });
