@@ -1,0 +1,58 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tasks/today"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Customer Approval</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="signature-page">
+  @if (task(); as task) {
+    <section class="hero">
+      <p>{{ task.taskNumber }}</p>
+      <h1>{{ task.customerName }}</h1>
+      <span>{{ task.title }}</span>
+    </section>
+
+    @if (error()) {
+      <ion-text color="danger">
+        <p class="error">{{ error() }}</p>
+      </ion-text>
+    }
+
+    <ion-card>
+      <ion-card-content>
+        <h2>Service Summary</h2>
+        <p>{{ task.description }}</p>
+        <p>Scheduled {{ task.scheduleTime | date: 'MMM d, h:mm a' }}</p>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card>
+      <ion-card-content>
+        <h2>Customer Signature</h2>
+        <ion-input
+          [(ngModel)]="customerName"
+          label="Customer name"
+          labelPlacement="stacked"
+          placeholder="Enter customer name"
+        ></ion-input>
+        <canvas
+          #signatureCanvas
+          class="signature-pad"
+          (pointerdown)="startDrawing($event)"
+          (pointermove)="draw($event)"
+          (pointerup)="stopDrawing()"
+          (pointerleave)="stopDrawing()"
+        ></canvas>
+        <div class="actions">
+          <ion-button fill="outline" color="medium" (click)="clearSignature()">Clear</ion-button>
+          <ion-button [disabled]="loading()" (click)="submit()">
+            {{ loading() ? 'Submitting...' : 'Submit Approval' }}
+          </ion-button>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  }
+</ion-content>

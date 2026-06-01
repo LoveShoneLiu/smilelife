@@ -1,0 +1,68 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tasks/today"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Check In</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="check-in-page">
+  @if (task(); as task) {
+    <section class="hero">
+      <p>{{ task.taskNumber }}</p>
+      <h1>{{ task.customerName }}</h1>
+      <span>{{ task.address }}</span>
+    </section>
+
+    @if (error()) {
+      <ion-text color="danger">
+        <p class="error">{{ error() }}</p>
+      </ion-text>
+    }
+
+    <ion-card>
+      <ion-card-content>
+        <h2>Site Location</h2>
+        <div class="map-preview">
+          <ion-icon name="location-outline" aria-hidden="true"></ion-icon>
+        </div>
+        <ion-button expand="block" fill="outline" (click)="openNavigation()">
+          <ion-icon name="navigate-outline" slot="start" aria-hidden="true"></ion-icon>
+          Open Navigation
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card>
+      <ion-card-content>
+        <h2>Arrival Record</h2>
+        @if (latestCheckIn(); as checkIn) {
+          <div class="record">
+            <p>
+              <ion-icon name="checkmark-circle-outline" aria-hidden="true"></ion-icon>
+              Checked in by {{ checkIn.actorName }}
+            </p>
+            <p>
+              <ion-icon name="time-outline" aria-hidden="true"></ion-icon>
+              {{ checkIn.createdAt | date: 'MMM d, h:mm a' }}
+            </p>
+            <p>
+              <ion-icon name="location-outline" aria-hidden="true"></ion-icon>
+              {{ checkIn.latitude | number: '1.4-4' }}, {{ checkIn.longitude | number: '1.4-4' }}
+            </p>
+          </div>
+        } @else {
+          <p class="muted">No check-in has been recorded for this job yet.</p>
+        }
+      </ion-card-content>
+    </ion-card>
+
+    <section class="actions">
+      <ion-button expand="block" [disabled]="loading()" (click)="checkIn()">
+        {{ loading() ? 'Checking in...' : 'Check In Now' }}
+      </ion-button>
+      <ion-button expand="block" fill="clear" color="medium" (click)="done()">Back to Job Details</ion-button>
+    </section>
+  }
+</ion-content>

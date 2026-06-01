@@ -16,5 +16,5 @@ export const guestGuard: CanActivateFn = (): boolean | UrlTree => {
   const authService = inject(AuthService);
   const router = inject(Router);
 
-  return authService.isAuthenticated() ? router.createUrlTree(['/folder/inbox']) : true;
+  return authService.isAuthenticated() ? router.createUrlTree(['/tasks/today']) : true;
 };

@@ -1,0 +1,120 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>{{ pageTitle() }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button fill="clear" aria-label="Refresh tasks" (click)="refresh()">
+        <ion-icon name="refresh-outline" aria-hidden="true"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="task-board-page">
+  <ion-refresher slot="fixed" (ionRefresh)="refresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <section class="board-summary">
+    <p class="eyebrow">Field Work Queue</p>
+    <h1>{{ visibleTasks().length }} jobs</h1>
+    @if (lastUpdatedAt()) {
+      <p class="updated">Updated {{ lastUpdatedAt() | date: 'MMM d, h:mm a' }}</p>
+    }
+  </section>
+
+  <section class="board-controls" aria-label="Task filters">
+    <ion-searchbar
+      placeholder="Search jobs, customers, or addresses"
+      [debounce]="150"
+      (ionInput)="setSearchTerm($event)"
+    ></ion-searchbar>
+
+    <ion-segment [value]="statusFilter()" scrollable="true" (ionChange)="setStatusFilter($event)">
+      <ion-segment-button value="all">
+        <ion-label>All</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="pending">
+        <ion-label>Pending</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="enRoute">
+        <ion-label>En Route</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="inProgress">
+        <ion-label>In Progress</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="pendingConfirm">
+        <ion-label>Approval</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="completed">
+        <ion-label>Completed</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="exception">
+        <ion-label>Exception</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </section>
+
+  @if (loading()) {
+    <div class="state-message">
+      <ion-text color="medium">Refreshing task data...</ion-text>
+    </div>
+  }
+
+  @if (taskGroups().length > 0) {
+    <ion-list class="task-groups" lines="none">
+      @for (group of taskGroups(); track group.status) {
+        <section class="task-group">
+          <header class="group-header">
+            <h2>{{ group.label }}</h2>
+            <span>{{ group.tasks.length }}</span>
+          </header>
+
+          @for (task of group.tasks; track task.id) {
+            <ion-card class="task-card" button="true" (click)="openTask(task)">
+              <ion-card-content>
+                <div class="task-card-header">
+                  <div>
+                    <p class="task-number">{{ task.taskNumber }}</p>
+                    <h3>{{ task.title }}</h3>
+                  </div>
+                  <ion-icon name="chevron-forward-outline" aria-hidden="true"></ion-icon>
+                </div>
+
+                <p class="customer">{{ task.customerName }}</p>
+
+                <div class="task-meta">
+                  <span>
+                    <ion-icon name="time-outline" aria-hidden="true"></ion-icon>
+                    {{ task.scheduleTime | date: 'MMM d, h:mm a' }}
+                  </span>
+                  <span>
+                    <ion-icon name="location-outline" aria-hidden="true"></ion-icon>
+                    {{ task.address }}
+                  </span>
+                </div>
+
+                <div class="task-tags">
+                  <ion-badge [class]="'status-badge ' + statusTone(task.status)">
+                    {{ statusLabel(task.status) }}
+                  </ion-badge>
+                  <ion-badge class="priority-badge">
+                    {{ priorityLabel(task.priority) }}
+                  </ion-badge>
+                </div>
+              </ion-card-content>
+            </ion-card>
+          }
+        </section>
+      }
+    </ion-list>
+  } @else {
+    <div class="empty-state">
+      <ion-icon name="calendar-outline" aria-hidden="true"></ion-icon>
+      <h2>No jobs found</h2>
+      <p>Try another status filter or search term.</p>
+    </div>
+  }
+</ion-content>

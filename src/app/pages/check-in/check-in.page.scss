@@ -1,0 +1,71 @@
+.check-in-page {
+  --background: #f5f7fa;
+}
+
+.hero,
+ion-card,
+.actions {
+  margin: 12px;
+}
+
+.hero p,
+.hero h1,
+.hero span,
+.error,
+.muted,
+.record p {
+  margin: 0;
+}
+
+.hero {
+  display: grid;
+  gap: 6px;
+  padding-top: 10px;
+}
+
+.hero p {
+  color: #0f766e;
+  font-weight: 800;
+}
+
+.hero h1,
+h2 {
+  color: #17212b;
+}
+
+ion-card {
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  box-shadow: none;
+}
+
+ion-card-content,
+.record,
+.actions {
+  display: grid;
+  gap: 10px;
+}
+
+.map-preview {
+  display: grid;
+  min-height: 150px;
+  place-items: center;
+  border-radius: 8px;
+  background: #dbeafe;
+}
+
+.map-preview ion-icon {
+  color: #1d4ed8;
+  font-size: 48px;
+}
+
+.record p {
+  display: grid;
+  grid-template-columns: 20px 1fr;
+  gap: 8px;
+  color: #475569;
+}
+
+.muted {
+  color: #64748b;
+}

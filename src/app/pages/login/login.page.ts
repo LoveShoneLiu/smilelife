@@ -73,7 +73,7 @@ export class LoginPage {
         account: this.account,
         password: this.password,
       });
-      await this.router.navigateByUrl('/folder/inbox', { replaceUrl: true });
+      await this.router.navigateByUrl('/tasks/today', { replaceUrl: true });
     } catch {
       // AuthService owns the user-facing error message.
     }

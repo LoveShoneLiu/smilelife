@@ -1,0 +1,191 @@
+.task-board-page {
+  --background: #f5f7fa;
+}
+
+.board-summary,
+.board-controls,
+.task-groups {
+  padding-inline: 12px;
+}
+
+.board-summary {
+  padding-top: 22px;
+}
+
+.eyebrow {
+  margin: 0;
+  color: #0f766e;
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+h1 {
+  margin: 6px 0 4px;
+  color: #17212b;
+  font-size: 34px;
+}
+
+.updated,
+.task-meta {
+  margin: 0;
+  color: #657485;
+  font-size: 14px;
+}
+
+.board-controls,
+.task-groups,
+.task-group,
+.task-card ion-card-content {
+  display: grid;
+  gap: 10px;
+}
+
+ion-searchbar {
+  --background: #ffffff;
+  --border-radius: 10px;
+  padding: 0;
+}
+
+ion-segment {
+  --background: #e8eef3;
+  border-radius: 10px;
+}
+
+ion-segment-button {
+  --border-radius: 8px;
+  --color: #596675;
+  --color-checked: #0f766e;
+  --indicator-color: #ffffff;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+
+.task-groups {
+  padding-bottom: 28px;
+  background: transparent;
+}
+
+.group-header,
+.task-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.group-header {
+  padding-top: 8px;
+}
+
+h2,
+h3 {
+  margin: 0;
+  color: #17212b;
+}
+
+h2 {
+  font-size: 17px;
+}
+
+h3 {
+  margin-top: 3px;
+  font-size: 18px;
+  line-height: 1.25;
+}
+
+.group-header span {
+  display: grid;
+  min-width: 28px;
+  height: 28px;
+  place-items: center;
+  border-radius: 999px;
+  background: #e2e8f0;
+  color: #465566;
+  font-weight: 800;
+}
+
+.task-card {
+  margin: 0;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  box-shadow: 0 10px 26px rgba(36, 49, 64, 0.08);
+}
+
+.task-number {
+  margin: 0;
+  color: #687789;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.customer {
+  margin: 0;
+  color: #334155;
+  font-weight: 700;
+}
+
+.task-meta,
+.task-meta span {
+  display: grid;
+}
+
+.task-meta span {
+  gap: 7px;
+  grid-template-columns: 18px 1fr;
+}
+
+.task-card ion-icon,
+.task-meta ion-icon {
+  color: #728093;
+}
+
+.task-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+ion-badge {
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.neutral {
+  --background: #e2e8f0;
+  --color: #334155;
+}
+
+.primary {
+  --background: #dbeafe;
+  --color: #1d4ed8;
+}
+
+.warning {
+  --background: #fef3c7;
+  --color: #92400e;
+}
+
+.success {
+  --background: #dcfce7;
+  --color: #166534;
+}
+
+.danger {
+  --background: #fee2e2;
+  --color: #b91c1c;
+}
+
+.priority-badge {
+  --background: #ecfdf5;
+  --color: #047857;
+}
+
+.empty-state {
+  display: grid;
+  justify-items: center;
+  padding: 52px 28px;
+  color: #64748b;
+  text-align: center;
+}

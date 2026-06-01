@@ -1,0 +1,105 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tasks/today"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Job Details</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="task-detail-page">
+  @if (task(); as task) {
+    <section class="hero">
+      <p>{{ task.taskNumber }}</p>
+      <h1>{{ task.title }}</h1>
+      <div class="badges">
+        <ion-badge [class]="statusTone(task.status)">{{ statusLabel(task.status) }}</ion-badge>
+        <ion-badge class="priority">{{ task.priority }}</ion-badge>
+      </div>
+    </section>
+
+    @if (error()) {
+      <ion-text color="danger">
+        <p class="error">{{ error() }}</p>
+      </ion-text>
+    }
+
+    <section class="actions" aria-label="Task actions">
+      @if (primaryAction(); as item) {
+        <ion-button expand="block" [color]="item.color" [disabled]="loading()" (click)="runAction(item.action)">
+          <ion-icon [name]="item.icon" slot="start" aria-hidden="true"></ion-icon>
+          {{ loading() ? 'Updating...' : item.label }}
+        </ion-button>
+      }
+      <div class="secondary-actions">
+        <ion-button fill="outline" color="medium" (click)="openNavigation()">
+          <ion-icon name="navigate-outline" slot="start" aria-hidden="true"></ion-icon>
+          Navigate
+        </ion-button>
+        <ion-button fill="outline" color="medium" (click)="openPhotos()">
+          <ion-icon name="camera-outline" slot="start" aria-hidden="true"></ion-icon>
+          Photos & Notes
+        </ion-button>
+      </div>
+      @if (task.status !== 'completed' && task.status !== 'exception') {
+        <ion-button expand="block" fill="clear" color="danger" [disabled]="loading()" (click)="reportIssue()">
+          <ion-icon name="alert-circle-outline" slot="start" aria-hidden="true"></ion-icon>
+          Report Issue
+        </ion-button>
+      }
+    </section>
+
+    <ion-card>
+      <ion-card-content>
+        <h2>Customer</h2>
+        <div class="info-grid">
+          <p>
+            <ion-icon name="person-outline" aria-hidden="true"></ion-icon>
+            <span>{{ task.customerName }} / {{ task.contactName }}</span>
+          </p>
+          <p>
+            <ion-icon name="call-outline" aria-hidden="true"></ion-icon>
+            <span>{{ task.contactPhone }}</span>
+          </p>
+          <p>
+            <ion-icon name="location-outline" aria-hidden="true"></ion-icon>
+            <span>{{ task.address }}</span>
+          </p>
+          <p>
+            <ion-icon name="time-outline" aria-hidden="true"></ion-icon>
+            <span>{{ task.scheduleTime | date: 'MMM d, h:mm a' }}</span>
+          </p>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card>
+      <ion-card-content>
+        <h2>Description</h2>
+        <p class="description">{{ task.description }}</p>
+      </ion-card-content>
+    </ion-card>
+
+    <section class="timeline">
+      <h2>Activity</h2>
+      @for (event of task.history; track event.id) {
+        <article class="event">
+          <span></span>
+          <div>
+            <h3>{{ event.title }}</h3>
+            <p>{{ event.actorName }} · {{ event.createdAt | date: 'MMM d, h:mm a' }}</p>
+            @if (event.note) {
+              <p>{{ event.note }}</p>
+            }
+          </div>
+        </article>
+      }
+    </section>
+  } @else {
+    <div class="empty-state">
+      <h1>Task not found</h1>
+      <p>This job may have been removed or is no longer assigned to you.</p>
+      <ion-button (click)="goBack()">Back to Jobs</ion-button>
+    </div>
+  }
+</ion-content>

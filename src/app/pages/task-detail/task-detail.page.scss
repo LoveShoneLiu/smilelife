@@ -1,0 +1,133 @@
+.task-detail-page {
+  --background: #f5f7fa;
+}
+
+.hero,
+.actions,
+ion-card,
+.timeline {
+  margin: 12px;
+}
+
+.hero {
+  display: grid;
+  gap: 8px;
+  padding-top: 10px;
+}
+
+.hero p,
+.error,
+.description,
+.info-grid p,
+.event p {
+  margin: 0;
+}
+
+.hero p {
+  color: #64748b;
+  font-weight: 800;
+}
+
+h1,
+h2,
+h3 {
+  margin: 0;
+  color: #17212b;
+}
+
+h1 {
+  font-size: 30px;
+}
+
+h2 {
+  font-size: 17px;
+}
+
+h3 {
+  font-size: 15px;
+}
+
+.badges,
+.secondary-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.secondary-actions ion-button {
+  flex: 1;
+}
+
+ion-badge {
+  border-radius: 8px;
+  font-weight: 800;
+  text-transform: capitalize;
+}
+
+.neutral { --background: #e2e8f0; --color: #334155; }
+.primary { --background: #dbeafe; --color: #1d4ed8; }
+.warning { --background: #fef3c7; --color: #92400e; }
+.success { --background: #dcfce7; --color: #166534; }
+.danger { --background: #fee2e2; --color: #b91c1c; }
+
+.priority {
+  --background: #ecfdf5;
+  --color: #047857;
+}
+
+.actions {
+  display: grid;
+  gap: 8px;
+}
+
+ion-card {
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  box-shadow: none;
+}
+
+ion-card-content,
+.info-grid,
+.timeline {
+  display: grid;
+  gap: 12px;
+}
+
+.info-grid p {
+  display: grid;
+  grid-template-columns: 20px 1fr;
+  gap: 8px;
+  color: #475569;
+}
+
+.description {
+  color: #475569;
+  line-height: 1.5;
+}
+
+.timeline {
+  padding-bottom: 28px;
+}
+
+.event {
+  display: grid;
+  grid-template-columns: 12px 1fr;
+  gap: 10px;
+}
+
+.event > span {
+  width: 10px;
+  height: 10px;
+  margin-top: 4px;
+  border-radius: 999px;
+  background: #0f766e;
+}
+
+.event p {
+  color: #64748b;
+  font-size: 13px;
+}
+
+.empty-state {
+  padding: 52px 24px;
+  text-align: center;
+}

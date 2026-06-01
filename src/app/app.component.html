@@ -2,30 +2,39 @@
   <ion-split-pane contentId="main-content" [disabled]="!isAuthenticated()">
     @if (isAuthenticated()) {
       <ion-menu contentId="main-content" type="overlay">
-      <ion-content>
-        <ion-list id="inbox-list">
-          <ion-list-header>SmileLife</ion-list-header>
-          <ion-note>{{ user()?.name }}</ion-note>
+        <ion-content>
+          <nav class="drawer-shell" aria-label="Primary navigation">
+            <header class="drawer-header">
+              <div class="brand-mark" aria-hidden="true">S</div>
+              <div>
+                <h1>SmileLife</h1>
+                <ion-note>{{ user()?.name }}</ion-note>
+              </div>
+            </header>
 
-          @for (p of appPages; track p; let i = $index) {
-            <ion-menu-toggle auto-hide="false">
-              <ion-item routerDirection="root" [routerLink]="[p.url]" lines="none" detail="false" routerLinkActive="selected">
-                <ion-icon aria-hidden="true" slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"></ion-icon>
-                <ion-label>{{ p.title }}</ion-label>
-              </ion-item>
-            </ion-menu-toggle>
-          }
-        </ion-list>
+            <section class="drawer-section">
+              <p class="section-label">Workspace</p>
+              @for (p of appPages; track p) {
+                <ion-menu-toggle auto-hide="false">
+                  <ion-item routerDirection="root" [routerLink]="[p.url]" lines="none" detail="false" routerLinkActive="selected">
+                    <ion-icon aria-hidden="true" slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"></ion-icon>
+                    <ion-label>{{ p.title }}</ion-label>
+                  </ion-item>
+                </ion-menu-toggle>
+              }
+            </section>
 
-        <ion-list>
-          <ion-item lines="none">
-            <ion-button fill="clear" color="medium" (click)="logout()">
+            <section class="drawer-summary" aria-label="Current work summary">
+              <span>Today&apos;s queue</span>
+              <strong>7 active jobs</strong>
+            </section>
+
+            <ion-button class="sign-out" fill="clear" color="medium" (click)="logout()">
               <ion-icon name="log-out-outline" slot="start" aria-hidden="true"></ion-icon>
               Sign out
             </ion-button>
-          </ion-item>
-        </ion-list>
-      </ion-content>
+          </nav>
+        </ion-content>
       </ion-menu>
     }
     <ion-router-outlet id="main-content"></ion-router-outlet>

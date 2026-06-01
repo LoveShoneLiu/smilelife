@@ -1,0 +1,76 @@
+.media-page {
+  --background: #f5f7fa;
+}
+
+.hero,
+ion-card,
+.photos,
+.notes {
+  margin: 12px;
+}
+
+.hero p,
+.hero h1,
+.error,
+.muted,
+.photo-card h3,
+.photo-card p,
+.notes p,
+.notes span {
+  margin: 0;
+}
+
+.hero p {
+  color: #0f766e;
+  font-weight: 800;
+}
+
+h1,
+h2,
+h3 {
+  color: #17212b;
+}
+
+ion-card {
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  box-shadow: none;
+}
+
+ion-card-content,
+.photos,
+.notes {
+  display: grid;
+  gap: 10px;
+}
+
+.photo-card {
+  display: grid;
+  grid-template-columns: 92px 1fr;
+  gap: 12px;
+  padding: 10px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+ion-img {
+  overflow: hidden;
+  border-radius: 6px;
+}
+
+ion-badge {
+  text-transform: capitalize;
+}
+
+.notes article {
+  padding: 12px;
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.muted,
+.photo-card p,
+.notes span {
+  color: #64748b;
+}
