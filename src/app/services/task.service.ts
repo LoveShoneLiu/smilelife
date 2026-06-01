@@ -318,9 +318,7 @@ export class TaskService {
     return updatedTask;
   }
 
-  async checkInTask(taskId: string): Promise<TaskDetail> {
-    const latitude = -36.8485 + (Math.random() - 0.5) / 100;
-    const longitude = 174.7633 + (Math.random() - 0.5) / 100;
+  async checkInTask(taskId: string, latitude: number, longitude: number): Promise<TaskDetail> {
     const checkIn: CheckInRecord = {
       id: `checkin_${taskId}_${Date.now()}`,
       latitude,

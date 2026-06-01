@@ -30,6 +30,7 @@ import {
 } from 'ionicons/icons';
 
 import { TaskAction, TaskDetail, TaskStatus } from '../../models/task.model';
+import { MapService } from '../../services/map.service';
 import { TASK_STATUS_META, TaskService } from '../../services/task.service';
 
 interface TaskActionItem {
@@ -76,6 +77,7 @@ const PRIMARY_ACTIONS: Partial<Record<TaskStatus, TaskActionItem>> = {
 export class TaskDetailPage implements OnInit {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
+  private readonly mapService = inject(MapService);
   private readonly taskService = inject(TaskService);
 
   readonly taskId = signal<string | null>(null);
@@ -160,15 +162,14 @@ export class TaskDetailPage implements OnInit {
     }
   }
 
-  openNavigation(): void {
+  async openNavigation(): Promise<void> {
     const task = this.task();
 
     if (!task) {
       return;
     }
 
-    const query = encodeURIComponent(task.address);
-    window.open(`https://www.google.com/maps/search/?api=1&query=${query}`, '_blank');
+    await this.mapService.openNavigation({ address: task.address });
   }
 
   async openPhotos(): Promise<void> {

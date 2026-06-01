@@ -24,12 +24,20 @@
     <ion-card>
       <ion-card-content>
         <h2>Site Location</h2>
+        <p class="muted">Preview provided by {{ mapProvider }}</p>
+        @if (locating()) {
+          <p class="muted">Getting current location...</p>
+        }
         <div class="map-preview">
-          <ion-icon name="location-outline" aria-hidden="true"></ion-icon>
+          @if (mapPreviewUrl(); as mapUrl) {
+            <iframe title="Site location map" [src]="mapUrl" loading="lazy"></iframe>
+          } @else {
+            <ion-icon name="location-outline" aria-hidden="true"></ion-icon>
+          }
         </div>
         <ion-button expand="block" fill="outline" (click)="openNavigation()">
           <ion-icon name="navigate-outline" slot="start" aria-hidden="true"></ion-icon>
-          Open Navigation
+          Open in {{ navigationProvider }}
         </ion-button>
       </ion-card-content>
     </ion-card>
