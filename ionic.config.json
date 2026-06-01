@@ -1,0 +1,7 @@
+{
+  "name": "SmileLife",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
