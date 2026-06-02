@@ -27,6 +27,7 @@
     "@capacitor/geolocation": "^8.2.0",
     "@capacitor/haptics": "8.0.2",
     "@capacitor/keyboard": "8.0.3",
+    "@capacitor/live-updates": "^0.5.0",
     "@capacitor/status-bar": "8.0.2",
     "@ionic/angular": "^8.0.0",
     "ionicons": "^7.0.0",
