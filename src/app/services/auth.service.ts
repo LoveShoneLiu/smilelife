@@ -1,5 +1,8 @@
-import { Injectable, computed, signal } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Injectable, computed, inject, signal } from '@angular/core';
+import { firstValueFrom } from 'rxjs';
 
+import { environment } from '../../environments/environment';
 import { AuthSession, User } from '../models/user.model';
 
 interface LoginCredentials {
@@ -13,20 +16,30 @@ interface AuthState {
   error: string | null;
 }
 
-const STORAGE_KEY = 'smilelife.auth.session';
+interface LoginApiUser {
+  id: number | string;
+  email: string | null;
+  phone: string | null;
+  displayName?: string | null;
+  display_name?: string | null;
+  role?: User['role'] | null;
+}
 
-// Temporary field-worker account used until the Next.js authentication API is connected.
-const MOCK_USER: User = {
-  id: 'user_001',
-  name: 'Alex Chen',
-  account: 'alex@smilelife.co.nz',
-  email: 'alex@smilelife.co.nz',
-  phone: '+64 21 000 0001',
-  role: 'field_worker',
-};
+interface LoginApiResponse {
+  success: boolean;
+  user?: LoginApiUser;
+  accessToken?: string;
+  token?: string;
+  message?: string;
+}
+
+const STORAGE_KEY = 'smilelife.auth.session';
+const LOGIN_ENDPOINT = `${environment.apiBaseUrl}/api/auth/smilelife/login`;
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
+  private readonly http = inject(HttpClient);
+
   // Signals keep the current auth snapshot synchronous for guards and templates.
   private readonly state = signal<AuthState>({
     session: this.readStoredSession(),
@@ -45,19 +58,28 @@ export class AuthService {
     const password = credentials.password;
 
     this.state.update((state) => ({ ...state, loading: true, error: null }));
-    await this.delay(500);
 
     if (!account || !password) {
       return this.failLogin('Enter your account and password');
     }
 
-    if (!this.isMockCredential(account, password)) {
-      return this.failLogin('The account or password is incorrect');
+    let response: LoginApiResponse;
+
+    try {
+      response = await firstValueFrom(
+        this.http.post<LoginApiResponse>(LOGIN_ENDPOINT, { account, password }),
+      );
+    } catch {
+      return this.failLogin('Unable to sign in. Please check the API service and try again.');
+    }
+
+    if (!response.success || !response.user) {
+      return this.failLogin(response.message ?? 'The account or password is incorrect');
     }
 
     const session: AuthSession = {
-      accessToken: 'mock-access-token-smilelife',
-      user: { ...MOCK_USER, account },
+      accessToken: response.accessToken ?? response.token ?? 'local-dev-session',
+      user: this.mapApiUser(response.user, account),
     };
 
     // Persist only the session token and user profile; never store passwords locally.
@@ -81,10 +103,18 @@ export class AuthService {
     throw new Error(message);
   }
 
-  // Keep mock credentials explicit so replacing this with POST /api/auth/login is straightforward.
-  private isMockCredential(account: string, password: string): boolean {
-    return ['alex@smilelife.co.nz', 'field@smilelife.co.nz', '0210000001'].includes(account)
-      && password === 'Smile123';
+  private mapApiUser(apiUser: LoginApiUser, account: string): User {
+    const displayName = apiUser.displayName ?? apiUser.display_name;
+    const fallbackName = apiUser.email ?? apiUser.phone ?? account;
+
+    return {
+      id: String(apiUser.id),
+      name: displayName ?? fallbackName,
+      account,
+      email: apiUser.email,
+      phone: apiUser.phone,
+      role: apiUser.role ?? 'field_worker',
+    };
   }
 
   private readStoredSession(): AuthSession | null {
@@ -101,12 +131,5 @@ export class AuthService {
       localStorage.removeItem(STORAGE_KEY);
       return null;
     }
-  }
-
-  // Simulates network latency so loading states can be verified before the real API exists.
-  private delay(ms: number): Promise<void> {
-    return new Promise((resolve) => {
-      window.setTimeout(resolve, ms);
-    });
   }
 }
