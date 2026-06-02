@@ -21,7 +21,7 @@ interface TaskState {
 const MOCK_TASKS: TaskDetail[] = [
   {
     id: 'task_1001',
-    title: 'Heat pump service',
+    title: 'Heat pump service test',
     taskNumber: 'SL-1001',
     customerName: 'Greenlane Dental',
     address: '214 Great South Road, Greenlane, Auckland',
@@ -30,7 +30,7 @@ const MOCK_TASKS: TaskDetail[] = [
     priority: 'high',
     contactName: 'Sarah Mitchell',
     contactPhone: '+64 21 456 900',
-    description: 'Complete scheduled heat pump service and confirm the reception area unit is running quietly.',
+    description: 'Complete scheduled heat pump service test and confirm the reception area unit is running quietly.',
     checkIns: [],
     photos: [],
     notes: [],
